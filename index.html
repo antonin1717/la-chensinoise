@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 <title>La Chensinoise</title>
 <meta name="description" content="La Chensinoise — 10 km de Chens-sur-Léman, Haute-Savoie. Rendez-vous le 26 avril 2027 à 14 h 00.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M48 12H30A18 18 0 0 0 30 48H40' fill='none' stroke='%231F6F9E' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='36' cy='30' r='6.5' fill='%23F79A4C'/%3E%3C/svg%3E">
@@ -76,14 +77,14 @@
   .nav-toggle{display:none;background:var(--lac-deep);border:none;cursor:pointer;width:44px;height:44px;border-radius:50%;flex:none;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
   .nav-toggle span{display:block;width:18px;height:2px;border-radius:2px;background:#fff;transition:transform .3s var(--ease),opacity .2s;}
   .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0);}
   .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
   @media (max-width:900px){
     .nav{padding:8px 8px 8px 16px;}
     .nav-links,.nav .btn{display:none;}
     .nav-toggle{display:flex;}
   }
-  .mobile-panel{position:fixed;inset:0;z-index:80;background:var(--lac-deep);color:#fff;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:0 32px;transform:translateY(-102%);transition:transform .45s var(--ease);border-radius:0 0 48px 48px;}
+  .mobile-panel{position:fixed;inset:0;min-height:100vh;z-index:80;background:var(--lac-deep);color:#fff;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:90px 32px 40px;overflow-y:auto;transform:translateY(-102%);transition:transform .45s var(--ease);}
   .mobile-panel.open{transform:none;}
   .mobile-panel a{font-family:var(--display);font-size:32px;font-weight:800;padding:10px 0;}
   .mobile-panel .btn{align-self:flex-start;margin-top:22px;font-size:18px;}
@@ -99,7 +100,8 @@
   .hero-grain{position:absolute;inset:0;z-index:1;mix-blend-mode:soft-light;opacity:.5;background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25),transparent 40%),radial-gradient(circle at 80% 70%,rgba(207,231,242,.25),transparent 45%);}
   .hero-inner{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:1.2fr .8fr;grid-template-areas:"title date" "left date";gap:0 clamp(30px,5vw,80px);align-items:center;} .hero-title{grid-area:title;min-width:0;} .hero-left{grid-area:left;min-width:0;} .hero-inner .date-wrap{grid-area:date;align-self:center;}
   @media (max-width:900px){.hero-inner{grid-template-columns:1fr;grid-template-areas:"title" "left" "date";gap:28px;}}
-  .hero .eyebrow{color:var(--ciel);}
+  .hero .eyebrow{color:var(--ciel);white-space:nowrap;}
+  @media (max-width:480px){.hero .eyebrow{font-size:12px;letter-spacing:.11em;}}
   .hero h1{font-size:clamp(40px,5.8vw,118px);font-weight:900;color:#fff;margin-top:22px;letter-spacing:-.035em;line-height:.95;white-space:nowrap;}
   .hero h1 .o{color:var(--soleil);}
   .hero-sub{font-family:var(--display);font-weight:800;font-size:clamp(19px,2.1vw,34px);color:var(--ciel);margin-top:14px;line-height:1;white-space:nowrap;display:flex;align-items:baseline;gap:.35em;} .hero-sub em{font-style:normal;font-weight:900;font-size:2.3em;letter-spacing:-.03em;color:var(--soleil);}
@@ -127,7 +129,10 @@
   /* Les coureurs courent sur le bord supérieur du bandeau blanc (= bas du hero). Ils sont enfoncés
      de 8px sous cette ligne (le hero rogne ce qui dépasse) pour que les pieds restent en contact avec
      la « route » malgré la phase aérienne du cycle de course. */
-  .runners{position:absolute;left:0;right:0;bottom:-8px;height:130px;z-index:3;pointer-events:none;}
+  /* Les coureurs sont placés dans la section du bandeau blanc, DERRIÈRE le bloc (z-index) et sans
+     rognage : sur le bloc, leurs pieds passent derrière son bord supérieur (= la route) ; dans les
+     marges, rien ne les coupe, donc aucune ligne de démarcation n'apparaît. */
+  .runners{position:absolute;left:0;right:0;bottom:calc(100% - 8px);height:210px;z-index:0;pointer-events:none;}
   .runner{position:absolute;bottom:0;left:-140px;animation:travel var(--d) linear infinite;animation-delay:var(--delay);will-change:transform;pointer-events:auto;}
   .runner svg{width:var(--w);height:auto;transform-origin:50% 100%;animation:bob var(--st) ease-in-out infinite alternate;}
   /* Saut au survol : petite impulsion, envol, réception (les jambes continuent de courir) */
@@ -148,6 +153,7 @@
 
   /* ---------- Essentiels ---------- */
   .essentials{margin-top:0;position:relative;z-index:4;}
+  .essentials .inner{position:relative;z-index:1;}   /* le bloc blanc passe devant les coureurs */
   .ess-row{background:#fff;border-radius:44px;padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;box-shadow:0 30px 60px -36px rgba(14,61,90,.45);}
   @media (max-width:820px){.ess-row{grid-template-columns:1fr 1fr;}} @media (max-width:480px){.ess-row{grid-template-columns:1fr;}}
   .ess-cell{padding:26px 34px;border-radius:36px;display:flex;flex-direction:column;gap:4px;transition:background .3s;}
@@ -377,10 +383,10 @@
       <path d="M0,205 C300,175 600,225 900,200 C1140,180 1300,215 1440,195 L1440,230 L0,230 Z" fill="#F5F9F7"></path>
     </svg>
   </div>
-  <div class="runners" id="runners" aria-hidden="true"></div>
 </header>
 
 <section class="essentials">
+  <div class="runners" id="runners" aria-hidden="true"></div>
   <div class="inner">
     <div class="ess-row">
       <div class="ess-cell"><span class="k">Distance</span><span class="v">10 km</span></div>
