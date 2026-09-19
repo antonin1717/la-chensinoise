@@ -32,7 +32,7 @@
     --pad:clamp(20px,4vw,72px);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}   /* + body : empêche tout défilement horizontal sur téléphone */
   html.reduced *{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
   body{font-family:var(--body);color:var(--ink);background:var(--ecume);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
   h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.02;letter-spacing:-0.015em;text-wrap:balance;}
@@ -84,7 +84,7 @@
     .nav-links,.nav .btn{display:none;}
     .nav-toggle{display:flex;}
   }
-  .mobile-panel{position:fixed;inset:0;min-height:100vh;z-index:80;background:var(--lac-deep);color:#fff;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:90px 32px 40px;overflow-y:auto;transform:translateY(-102%);transition:transform .45s var(--ease);}
+  .mobile-panel{position:fixed;inset:0;min-height:100vh;z-index:80;background:var(--lac-deep);color:#fff;display:flex;flex-direction:column;justify-content:flex-start;gap:8px;padding:110px 32px 40px;overflow-y:auto;transform:translateY(-102%);transition:transform .45s var(--ease);}
   .mobile-panel.open{transform:none;}
   .mobile-panel a{font-family:var(--display);font-size:32px;font-weight:800;padding:10px 0;}
   .mobile-panel .btn{align-self:flex-start;margin-top:22px;font-size:18px;}
@@ -132,7 +132,9 @@
   /* Les coureurs sont placés dans la section du bandeau blanc, DERRIÈRE le bloc (z-index) et sans
      rognage : sur le bloc, leurs pieds passent derrière son bord supérieur (= la route) ; dans les
      marges, rien ne les coupe, donc aucune ligne de démarcation n'apparaît. */
-  .runners{position:absolute;left:0;right:0;bottom:calc(100% - 8px);height:210px;z-index:0;pointer-events:none;}
+  .runners{position:absolute;left:calc(var(--pad) + 44px);right:calc(var(--pad) + 44px);max-width:calc(1680px - 2*var(--pad) - 88px);margin:0 auto;bottom:calc(100% - 8px);height:210px;z-index:0;pointer-events:none;overflow:hidden;}
+  /* ↑ largeur = celle du bloc blanc moins ses coins arrondis (44px) ; rognage net aux deux bords :
+       les coureurs s'arrêtent de chaque côté du bloc et ne débordent jamais de la page. */
   .runner{position:absolute;bottom:0;left:-140px;animation:travel var(--d) linear infinite;animation-delay:var(--delay);will-change:transform;pointer-events:auto;}
   .runner svg{width:var(--w);height:auto;transform-origin:50% 100%;animation:bob var(--st) ease-in-out infinite alternate;}
   /* Saut au survol : petite impulsion, envol, réception (les jambes continuent de courir) */
@@ -255,7 +257,7 @@
   .main-logo.mairie span{font-family:var(--display);font-weight:800;font-size:clamp(18px,1.4vw,22px);line-height:1.1;color:var(--lac-deep);}
   .logo.mairie img{height:52px;}
   .logo.mairie span{font-size:18px;line-height:1.05;}
-  .marquee{margin-top:60px;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
+  .marquee{margin:60px auto 0;max-width:1680px;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
   .marquee + .marquee{margin-top:14px;}
   /* La piste contient 6 groupes identiques (assez pour couvrir n'importe quel écran) et recule
      d'exactement un groupe (largeur des logos + espacements) : le raccord est invisible. */
@@ -358,7 +360,7 @@
         <a href="#parcours" class="btn btn-ghost" style="color:#fff;">Voir le parcours</a>
       </div>
       <div class="hero-note">
-        <span><i></i>Départ 14 h 00</span>
+        <span><i></i>Départ 14&nbsp;h&nbsp;00</span>
         <span><i></i>Départ et arrivée au village</span>
       </div>
     </div>
@@ -370,7 +372,7 @@
         <div class="dow">Rendez-vous le</div>
         <div class="day">26</div>
         <div class="my">avril 2027</div>
-        <div class="hour">Départ 14 h 00</div>
+        <div class="hour">Départ 14&nbsp;h&nbsp;00</div>
         <div class="cd"><i></i><span id="countdown">J-223</span></div>
       </div>
     </div>
@@ -391,7 +393,7 @@
     <div class="ess-row">
       <div class="ess-cell"><span class="k">Distance</span><span class="v">10 km</span></div>
       <div class="ess-cell"><span class="k">Lieu</span><span class="v">Chens-sur-Léman</span></div>
-      <div class="ess-cell"><span class="k">Date</span><span class="v">26 avril 2027</span></div><div class="ess-cell"><span class="k">Heure</span><span class="v">14 h 00</span></div>
+      <div class="ess-cell"><span class="k">Date</span><span class="v">26 avril 2027</span></div><div class="ess-cell"><span class="k">Heure</span><span class="v">14&nbsp;h&nbsp;00</span></div>
     </div>
   </div>
 </section>
@@ -468,7 +470,7 @@
         <span class="eyebrow">Infos pratiques</span>
         <h2>Tout ce qu'il faut savoir avant le jour J.</h2>
       </div>
-      <div class="big-date"><small>Rendez-vous</small>26 avril 2027<br><em>14 h 00</em></div>
+      <div class="big-date"><small>Rendez-vous</small>26 avril 2027<br><em>14&nbsp;h&nbsp;00</em></div>
     </div>
 
     <div class="info-grid">
@@ -490,7 +492,7 @@
       </div>
       <div class="info reveal">
         <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="2.2"></rect><circle cx="8.5" cy="12" r="2" stroke="currentColor" stroke-width="2"></circle><path d="M13 10h5M13 14h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></div>
-        <div><h3>Retrait des dossards</h3><p>Le jour de la course, <b>de 10 h 00 à 13 h 00</b>, sur présentation d'une pièce d'identité.</p></div>
+        <div><h3>Retrait des dossards</h3><p>Le jour de la course, <b>de 10&nbsp;h&nbsp;00 à 13&nbsp;h&nbsp;00</b>, sur présentation d'une pièce d'identité.</p></div>
       </div>
       <div class="info reveal">
         <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"></path><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
